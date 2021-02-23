@@ -1,30 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from const import Const
+from const import GPX, KASHMIR3D
 
-class Extensions:
-    def __init__(self):
-        pass
 
-    @classmethod
-    def icon(cls, t):
-        assert(e := t.find(Const.GPX + 'extensions'))
-        return e.find(Const.KASHMIR3D + 'icon').text
+def icon(t):
+    e = t.find(GPX + 'extensions')
+    return e.find(KASHMIR3D + 'icon').text
 
-    @classmethod
-    def line_color(cls, t):
-        assert(e := t.find(Const.GPX + 'extensions'))
-        return e.find(Const.KASHMIR3D + 'line_color').text
 
-    @classmethod
-    def line_size(cls, t):
-        assert(e := t.find(Const.GPX + 'extensions'))
-        return e.find(Const.KASHMIR3D + 'line_size').text
+def line_color(t):
+    e = t.find(GPX + 'extensions')
+    return e.find(KASHMIR3D + 'line_color').text
 
-    @classmethod
-    def line_style(cls, t):
-        assert(e := t.find(Const.GPX + 'extensions'))
-        return e.find(Const.KASHMIR3D + 'line_style').text
+
+def line_size(t):
+    e = t.find(GPX + 'extensions')
+    return e.find(KASHMIR3D + 'line_size').text
+
+
+def line_style(t):
+    e = t.find(GPX + 'extensions')
+    return e.find(KASHMIR3D + 'line_style').text
 
 # __END__

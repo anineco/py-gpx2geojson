@@ -1,20 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-class IconLut:
-    def __init__(self):
-        pass
+def url(icon):
+    return 'https://map.jpn.org/icon/' + icon + '.png'
 
-    @classmethod
-    def url(cls, icon):
-        return f'https://map.jpn.org/icon/{icon}.png'
 
-    @classmethod
-    def size(cls, icon):
-        return [24, 24]
+def size(icon):
+    return [24, 24]
 
-    @classmethod
-    def anchor(cls, icon):
-        return [12, 12]
+
+def anchor(icon):
+    return [12, 12]
 
 # __END__

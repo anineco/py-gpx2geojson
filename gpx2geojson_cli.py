@@ -8,82 +8,98 @@ import sys
 import tempfile
 import xml.etree.ElementTree as ET
 
-from config import cf
-from const import Const
-from togeojson import ToGeoJSON
-from tokml import ToKML
+from config import Config
+from const import GPX
+from togeojson import togeojson
+from tokml import tokml
 
 ET.register_namespace('', 'http://www.topografix.com/GPX/1/1')
 ET.register_namespace('kashmir3d', 'http://www.kashmir3d.com/namespace/kashmir3d')
 ET.register_namespace('kml', 'http://www.opengis.net/kml/2.2')
 
-class Gpx2GeoJSON:
-    def __init__(self):
-        pass
+def merge(files):
+    """ read gpx files and merge into one tree. """
+    tree = ET.parse(files.pop(0))
+    root = tree.getroot()
+    for f in files:
+        t = ET.parse(f)
+        r = t.getroot()
+        for tag in ['wpt', 'rte', 'trk']:
+            for x in r.findall(GPX + tag):
+                root.append(x)
+    return tree
 
-    @classmethod
-    def merge(cls, files):
-        tree = ET.parse(files.pop(0))
-        root = tree.getroot()
-        for file in files:
-            t = ET.parse(file)
-            r = t.getroot()
-            for tag in ['wpt', 'rte', 'trk']:
-                for x in r.findall(Const.GPX + tag):
-                    root.append(x)
-        #
-        return tree
 
-    @classmethod
-    def decimate_segment(cls, trkseg):
-        global cf
-        temp = tempfile.TemporaryDirectory()
-        tmp1 = os.path.join(temp.name, 'tmp1.gpx')
-        tmp2 = os.path.join(temp.name, 'tmp2.gpx')
-        cmd = f'gpsbabel -t -i gpx -f {tmp1} -x simplify,error={cf.xt_error}k -o gpx,gpxver=1.1 -F {tmp2}'
+def decimate_segment(trkseg, xt_error):
+    """ decimate points in a track-segment using gpsbabel. """
+    temp = tempfile.TemporaryDirectory()
+    tmp1 = os.path.join(temp.name, 'tmp1.gpx')
+    tmp2 = os.path.join(temp.name, 'tmp2.gpx')
+    cmd = 'gpsbabel -t -i gpx -f ' + tmp1 + ' -x simplify,error=' + xt_error + ' -o gpx,gpxver=1.1 -F ' + tmp2
 
-        root = ET.Element('gpx')
-        ET.SubElement(root, 'trk').append(trkseg)
-        tree = ET.ElementTree(root)
-        tree.write(tmp1)
+    root = ET.Element('gpx')
+    ET.SubElement(root, 'trk').append(trkseg)
+    tree = ET.ElementTree(root)
+    tree.write(tmp1)
 
-        subprocess.run(cmd.split(), check=True)
+    subprocess.run(cmd.split(), check=True)
 
-        tree = ET.parse(tmp2)
-        root = tree.getroot()
-        trk = root.find(Const.GPX + 'trk')
-        trkseg = trk.find(Const.GPX + 'trkseg')
-        temp.cleanup()
-        return trkseg
+    tree = ET.parse(tmp2)
+    root = tree.getroot()
+    trk = root.find(GPX + 'trk')
+    trkseg = trk.find(GPX + 'trkseg')
+    temp.cleanup()
+    return trkseg
 
-    @classmethod
-    def decimate(cls, tree):
-        root = tree.getroot()
-        for trk in root.findall(Const.GPX + 'trk'):
-            for i, child in enumerate(trk):
-                if child.tag == Const.GPX + 'trkseg':
-                    trk[i] = cls.decimate_segment(child)
 
-    @classmethod
-    def convert(cls, args):
-        global cf
-        tree = cls.merge(args)
-        if cf.xt_state:
-            cls.decimate(tree)
-        if cf.outext == '.geojson':
-            geojson = ToGeoJSON.convert(tree)
-            with open('routemap' + cf.outext, 'w') as f:
-                f.write(json.dumps(geojson, indent=2, ensure_ascii=False))
+def decimate(tree, xt_error):
+    """ decimate track points in an element tree of gpx. """
+    root = tree.getroot()
+    for trk in root.findall(GPX + 'trk'):
+        for i, child in enumerate(trk):
+            if child.tag == GPX + 'trkseg':
+                trk[i] = decimate_segment(child, xt_error)
+
+def count_track_point(tree):
+    """ count track points in a element tree """
+    root = tree.getroot()
+    n_point = 0
+    for trk in root.findall(GPX + 'trk'):
+        for trkseg in trk.findall(GPX + 'trkseg'):
+            n_point += len(trkseg.findall(GPX + 'trkpt'))
+    return n_point
+
+def convert(args, outfile, xt_state=None, xt_error=None, outext=None, line_size=None, line_style=None, opacity=None):
+    """ convert multiple gpx into a geojson, kml or gpx. outputs to stdout. """
+    tree = merge(args)
+    if xt_state == 'normal':
+        decimate(tree, xt_error)
+    n_point = count_track_point(tree)
+    if outext == '.geojson':
+        geojson = togeojson(tree, line_size, line_style, opacity)
+        s = json.dumps(geojson, indent=2, ensure_ascii=False) # serialize
+        if outfile is None:
+            print(s)
         else:
-            xml = ToKML.convert(tree) if cf.outext == '.kml' else tree
-            xml.write('routemap' + cf.outext, encoding='UTF-8')
+            with open(outfile, 'w') as f:
+                f.write(s)
+    else:
+        if outext == '.kml':
+            tree = tokml(tree, line_size, opacity)
+        if outfile is None:
+            print(ET.tostring(tree.getroot(), encoding='unicode'))
+        else:
+            tree.write(outfile, encoding='unicode')
+    return n_point
 
 def main():
-    global cf
+    cf = Config()
     cf.load()
     args = cf.parse(sys.argv[1:])
 #   cf.list()
-    Gpx2GeoJSON.convert(args)
+    convert(args, xt_state=cf.xt_state, xt_error=cf.xt_error, outext=cf.outext,
+            line_size=cf.line_size, line_style=cf.line_style, opacity=cf.opacity)
+
 
 if __name__ == '__main__':
     main()
