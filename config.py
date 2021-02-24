@@ -12,7 +12,7 @@ class Config:
         line_style (str): line style.
         line_size (str): line size (width) of track and route.
         opacity (str): opacity of line.
-        xt_state (str): 'disabled' or 'normal'. switch track point decimation.
+        xt_state (str): '0' or '1'. switch track point decimation.
         xt_error (str): allowable error of cross track decimation. unit [km].
         indir (str): initial directory of input files.
         outdir (str): initial directory of output file.
@@ -23,19 +23,24 @@ class Config:
         self.line_style = '0'
         self.line_size = '0'
         self.opacity = '0.5'
-        self.xt_state = 'disabled'
+        self.xt_state = '0'
         self.xt_error = '0.005'
         self.indir = ''
         self.outdir = ''
         self.outext = '.geojson'
+        # for backward compatibility
+        self.title = 'GPS Track Log'
 
     def load(self):
         """load configuration parameters from dot-file."""
-        with open(self.__dotfile, 'r') as f:
-            for row in f:
-                key, value = row.strip().split('=')
-                if not key.startswith('_') and hasattr(self, key):
-                    setattr(self, key, value)
+        try:
+            with open(self.__dotfile, 'r') as f:
+                for row in f:
+                    key, value = row.strip().split('=')
+                    if not key.startswith('_') and hasattr(self, key):
+                        setattr(self, key, value)
+        except Exception as e:
+            pass
 
     def save(self):
         """save configuration parameters to dot-file."""
@@ -73,6 +78,8 @@ Options:
             print(e, file=sys.stderr)
             self.usage()
             sys.exit(1)
+
+        self.xt_state = '0'
         for opt, arg in opts:
             if opt == '-a':
                 self.opacity = arg
@@ -81,7 +88,7 @@ Options:
             elif opt == '-w':
                 self.line_size = arg
             elif opt == '-x':
-                self.xt_state = 'normal'
+                self.xt_state = '1'
                 self.xt_error = arg
             elif opt == '-f':
                 self.outext = '.' + arg

@@ -73,7 +73,7 @@ def convert(args, outfile, xt_state=None, xt_error=None, outext=None,
         line_size=None, line_style=None, opacity=None):
     """convert multiple gpx into a geojson, kml or gpx and ouput."""
     tree = merge(args)
-    if xt_state == 'normal':
+    if xt_state != '0':
         decimate(tree, xt_error)
     n_point = count_track_point(tree)
     if outext == '.geojson':

@@ -83,7 +83,7 @@ class App(tk.Frame):
         f = tk.Frame(self)
         f.grid(row=1, column=1, rowspan=3, columnspan=3, sticky='nsew')
 
-        l = tk.Listbox(f, width=60, height=3, selectmode='single')
+        l = tk.Listbox(f, width=75, height=3, selectmode='single')
         l.pack(side='left', fill='y')
 
         b = tk.Scrollbar(f, orient='vertical')
@@ -153,14 +153,14 @@ class App(tk.Frame):
         b.grid(row=7, column=3, sticky='nsew')
         self.xt = b
 
-        b = tk.Checkbutton(self, text='軌跡を間引く', onvalue='normal', offvalue='disabled')
+        b = tk.Checkbutton(self, text='軌跡を間引く', onvalue='1', offvalue='0')
         b['variable'] = self.xt_state
         b['command'] = self.set_xt
         b.grid(row=6, column=3, sticky='w')
         self.set_xt()
 
         # 軌跡点数
-        e = tk.Entry(self)
+        e = tk.Entry(self, state='readonly')
         e['textvariable'] = self.n_point
         e.grid(row=9, column=3, sticky='w')
 
@@ -202,7 +202,7 @@ class App(tk.Frame):
             self.outfile.set(ret)
 
     def set_xt(self):
-        self.xt.configure(state=self.xt_state.get())
+        self.xt.configure(state='normal' if self.xt_state.get() != '0' else 'disabled')
 
     def conv(self):
         args = list(self.gpxfiles.get(0, 'end'))
