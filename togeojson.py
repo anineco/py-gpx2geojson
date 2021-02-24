@@ -7,8 +7,8 @@ import extensions
 import iconlut
 from const import GPX
 
-
-def get_point_feature(pt): # wpt or rtept
+def get_point_feature(pt):
+    """get point feature from 'wpt' or 'rtept'."""
     icon = extensions.icon(pt)
     feature = {
         'type': 'Feature',
@@ -30,14 +30,17 @@ def get_point_feature(pt): # wpt or rtept
                 feature['properties'][key] = value
     return feature
 
+# kashmir3d:line_style: dashArray
+dash = {
+    '11': [4,2],        # short dash
+    '12': [6,2],        # long dash
+    '13': [1,2],        # dot
+    '14': [1,2,5,2],    # dot-dash (one dot chain)
+    '15': [1,2,1,2,6,2] # dot-dot-dash (two-dot chain)
+}
+
 def get_linestring_properties(t, line_size, line_style, opacity):
-    dash = { # kashmir3d:line_style: dashArray
-        '11': [4,2],        # short dash
-        '12': [6,2],        # long dash
-        '13': [1,2],        # dot
-        '14': [1,2,5,2],    # dot-dash (one dot chain)
-        '15': [1,2,1,2,6,2] # dot-dot-dash (two-dot chain)
-    }
+    """get linestring properties from 'rte' or 'trk'."""
     m = re.match(r'(..)(..)(..)', extensions.line_color(t))
     c = '#' + m.group(3) + m.group(2) + m.group(1)
     w = int(line_size if line_size != '0' else extensions.line_size(t))
@@ -53,6 +56,7 @@ def get_linestring_properties(t, line_size, line_style, opacity):
     return properties
 
 def get_linestring_feature(segment, tag, properties):
+    """get linestring feature from 'rte' or 'trkseg'."""
     feature = {
         'type': 'Feature',
         'properties': properties,
@@ -68,6 +72,7 @@ def get_linestring_feature(segment, tag, properties):
     return feature
 
 def togeojson(tree, line_size, line_style, opacity):
+    """convert element tree of gpx to geojson."""
     geojson = {
         'type': 'FeatureCollection',
         'features': []

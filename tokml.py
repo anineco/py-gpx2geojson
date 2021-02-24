@@ -6,12 +6,13 @@ import xml.etree.ElementTree as ET
 
 import extensions
 import iconlut
-from const import GPX, KASHMIR3D
+from const import GPX
 
 using = None
 seqno = None
 
-def get_point_placemark(pt): # wpt or rtept
+def get_point_placemark(pt):
+    """get point placemark from 'wpt' or 'rtept'."""
     global using
     icon = extensions.icon(pt)
     id = 'N' + icon
@@ -31,14 +32,16 @@ def get_point_placemark(pt): # wpt or rtept
     ET.SubElement(p, 'styleUrl').text = '#' + id
     lon = float(pt.get('lon'))
     lat = float(pt.get('lat'))
-    ET.SubElement(ET.SubElement(p, 'Point'), 'coordinates').text\
-            = '{:.6f},{:.6f}'.format(lon, lat)
+    ET.SubElement(
+        ET.SubElement(p, 'Point'), 'coordinates'
+    ).text = '{:.6f},{:.6f}'.format(lon, lat)
     return p
 
-def get_linestring_style(t, line_size, opacity): # trk or rte
+def get_linestring_style(t, line_size, opacity):
+    """get linestring style from 'trk' or 'rte'."""
     global seqno
     seqno += 1
-    s = ET.Element('Style', attrib={'id': 'id{:05d}'.format(seqno)})
+    s = ET.Element('Style', attrib={'id':'id{:05d}'.format(seqno)})
     l = ET.SubElement(s, 'LineStyle')
     a = int(float(opacity) * 255)
     c = '{:02x}'.format(a) + extensions.line_color(t)
@@ -48,6 +51,7 @@ def get_linestring_style(t, line_size, opacity): # trk or rte
     return s
 
 def get_linestring_placemark(segment, tag, style, name):
+    """get linestring placemark from 'trkseg' or 'rte'."""
     p = ET.Element('Placemark')
     ET.SubElement(p, 'name').text = name
     ET.SubElement(p, 'styleUrl').text = '#' + style.get('id')
@@ -63,6 +67,7 @@ def get_linestring_placemark(segment, tag, style, name):
     return p
 
 def tokml(tree, line_size, opacity):
+    """convert element tree of gpx to kml."""
     global using, seqno
     using = {}
     seqno = 0
@@ -83,7 +88,7 @@ def tokml(tree, line_size, opacity):
             if extensions.icon(rtept) != '903001':
                 p = get_point_placemark(rtept)
                 doc.append(p)
-        #
+
         name = rte.find(GPX + 'name').text
         s = get_linestring_style(rte, line_size, opacity)
         p = get_linestring_placemark(rte, 'rtept', s, name)

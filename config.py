@@ -5,44 +5,54 @@ import os
 import sys
 from getopt import GetoptError, getopt
 
-
 class Config:
+    """load, save configuration parameters and parse them from command line.
 
+    Attributes:
+        line_style (str): line style.
+        line_size (str): line size (width) of track and route.
+        opacity (str): opacity of line.
+        xt_state (str): 'disabled' or 'normal'. switch track point decimation.
+        xt_error (str): allowable error of cross track decimation. unit [km].
+        indir (str): initial directory of input files.
+        outdir (str): initial directory of output file.
+        outext (str): extension of output file. '.geojson', '.kml' or '.gpx'
+    """
     def __init__(self):
         self.__dotfile = os.path.join(os.path.expanduser('~'), '.gpx2geojson')
         self.line_style = '0'
         self.line_size = '0'
         self.opacity = '0.5'
-        self.xt_state = 'normal' # or 'disabled'
+        self.xt_state = 'disabled'
         self.xt_error = '0.005'
         self.indir = ''
         self.outdir = ''
         self.outext = '.geojson'
 
     def load(self):
-        """ load configuration parameters from ~/.gpx2geojson """
+        """load configuration parameters from dot-file."""
         with open(self.__dotfile, 'r') as f:
             for row in f:
                 key, value = row.strip().split('=')
-                if not key.startswith('_') and not hasattr(self, key):
+                if not key.startswith('_') and hasattr(self, key):
                     setattr(self, key, value)
 
     def save(self):
-        """ save configuration parameters to ~/.gpx2geojson """
+        """save configuration parameters to dot-file."""
         with open(self.__dotfile, 'w') as f:
             for key, value in vars(self).items():
                 if not key.startswith('_'):
                     f.write(key + '=' + value + '\n')
 
     def list(self):
-        """ list configuration parameters to stdout """
+        """list configuration parameters to stdout."""
         for key, value in vars(self).items():
             if not key.startswith('_'):
                 print(key + '=' + value)
 
     @staticmethod
     def usage():
-        """ display help message. """
+        """display help message to stderr."""
         help = """\
 Usage: gpx2geojson gpxfiles...
 Options:
@@ -56,7 +66,7 @@ Options:
         print(help, file=sys.stderr)
 
     def parse(self, argv):
-        """ parse command line arguments and options. """
+        """parse command line options."""
         try:
             opts, args = getopt(argv, 'a:s:w:x:f:h')
         except GetoptError as e:
@@ -71,6 +81,7 @@ Options:
             elif opt == '-w':
                 self.line_size = arg
             elif opt == '-x':
+                self.xt_state = 'normal'
                 self.xt_error = arg
             elif opt == '-f':
                 self.outext = '.' + arg
@@ -80,12 +91,13 @@ Options:
         return args
 
 def main():
-    """ for debug only. """
+    """for debug only."""
     cf = Config()
     cf.load()
-    args = cf.parse(sys.argv[1:])
     cf.list()
+    args = cf.parse(sys.argv[1:])
     print(args)
+    cf.list()
     cf.save()
 
 if __name__ == '__main__':

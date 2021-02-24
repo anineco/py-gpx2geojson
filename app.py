@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# 参考URL https://anzeljg.github.io/rin2/book2/2405/docs/tkinter/index.html
-
 import os
 import tkinter as tk
 from tkinter import filedialog, messagebox
@@ -36,7 +34,8 @@ class App(tk.Frame):
         self.xt = None
         self.create_widgets()
 
-    def save_var(self):
+    def save_config(self):
+        """save configuration parameters."""
         self.cf.line_style = self.line_style.get()
         self.cf.line_size = self.line_size.get()
         self.cf.opacity = self.opacity.get()
@@ -46,7 +45,8 @@ class App(tk.Frame):
         self.cf.save()
 
     def create_widgets(self):
-        l = tk.Label(self, text='GPX→GeoJSONコンバータ Ver.'+VERSION) # text は必須
+        """create gui widgets."""
+        l = tk.Label(self, text='GPX→GeoJSONコンバータ Ver.'+VERSION)
         l.grid(row=0, column=0, columnspan=5)
 
         l = tk.Label(self, text='GPXファイル')
@@ -153,10 +153,8 @@ class App(tk.Frame):
         b.grid(row=7, column=3, sticky='nsew')
         self.xt = b
 
-        b = tk.Checkbutton(self, text='軌跡を間引く')
+        b = tk.Checkbutton(self, text='軌跡を間引く', onvalue='normal', offvalue='disabled')
         b['variable'] = self.xt_state
-        b['onvalue'] = 'normal'
-        b['offvalue'] = 'disabled'
         b['command'] = self.set_xt
         b.grid(row=6, column=3, sticky='w')
         self.set_xt()
@@ -176,7 +174,6 @@ class App(tk.Frame):
         b['command'] = self.quit
         b.grid(row=10, column=4)
 
-
     def append_to_list(self):
         ret = filedialog.askopenfilenames(
             filetypes=[('GPXファイル', '*.gpx'), ('', '*')],
@@ -186,46 +183,35 @@ class App(tk.Frame):
             self.gpxfiles.insert('end', path)
             self.cf.indir = os.path.dirname(path)
 
-
     def remove_from_list(self):
         i = self.gpxfiles.curselection()
         self.gpxfiles.delete(i)
 
-
     def clear_list(self):
         self.gpxfiles.delete(0, 'end')
 
-
     def select_savefile(self):
         ext = self.outext.get()
-        if ext == '.geojson':
-            typ = 'GeoJSON'
-        elif ext == '.kml':
-            typ = 'KML'
-        else:
-            typ = 'GPX'
+        nam = { '.geojson': 'GeoJSON', '.kml': 'KML', '.gpx': 'GPX' }
         ret = filedialog.asksaveasfilename(
-            filetypes=[(typ + 'ファイル', '*' + ext), ('', '*')],
-            initialdir=self.cf.outdir
+            filetypes=[(nam[ext] + 'ファイル', '*' + ext), ('', '*')],
+            initialdir=self.cf.outdir,
+            initialfile='routemap'
         )
         if ret:
             self.outfile.set(ret)
 
-
     def set_xt(self):
         self.xt.configure(state=self.xt_state.get())
-
 
     def conv(self):
         args = list(self.gpxfiles.get(0, 'end'))
         if len(args) == 0:
-            messagebox.showwarning(title='警告', icon='warning',
-                    message='GPXファイルが未設定')
+            messagebox.showwarning(title='警告', message='GPXファイルが未設定')
             return
         outfile = self.outfile.get()
         if not outfile:
-            messagebox.showwarning(title='警告', icon='warning',
-                    message='出力ファイルが未設定')
+            messagebox.showwarning(title='警告', message='出力ファイルが未設定')
             return
         n_point = convert(args, outfile,
                 xt_state=self.xt_state.get(),
@@ -236,22 +222,19 @@ class App(tk.Frame):
                 opacity=self.opacity.get()
         )
         if n_point < 0:
-            messagebox.showerror(title='エラー', icon='error')
+            messagebox.showerror(title='エラー', message='変換に失敗しました')
             return
-        self.n_point.set(n_point)
+        self.n_point.set(str(n_point))
+        self.master.update()
         self.cf.outdir = os.path.dirname(outfile)
-        messagebox.showwarning(title='成功', icon='info',
-                message='変換結果を'+outfile+'に出力しました')
-
+        messagebox.showinfo(title='成功', message='変換結果を'+outfile+'に出力しました')
 
     def quit(self):
-        self.save_var()
+        self.save_config()
         self.master.destroy()
 
-
-# end of class
-
 def main():
+    """for debug only."""
     root = tk.Tk()
     app = App(master=root)
     app.mainloop()
