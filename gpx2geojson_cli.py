@@ -3,11 +3,11 @@
 
 import json
 import os
-import subprocess
 import sys
 import tempfile
 import xml.etree.ElementTree as ET
 
+import gpsbabel
 from config import Config
 from const import GPX
 from togeojson import togeojson
@@ -34,16 +34,17 @@ def decimate_segment(trkseg, xt_error):
     temp = tempfile.TemporaryDirectory()
     tmp1 = os.path.join(temp.name, 'tmp1.gpx')
     tmp2 = os.path.join(temp.name, 'tmp2.gpx')
-    cmd = 'gpsbabel -t -i gpx -f ' + tmp1\
-            + ' -x simplify,error=' + xt_error\
-            + ' -o gpx,gpxver=1.1 -F ' + tmp2
 
     root = ET.Element('gpx')
     ET.SubElement(root, 'trk').append(trkseg)
     tree = ET.ElementTree(root)
     tree.write(tmp1)
 
-    subprocess.run(cmd.split(), check=True)
+    gpsbabel.exe(
+        '-t', '-i', 'gpx', '-f', tmp1,
+        '-x', 'simplify,error=' + xt_error,
+        '-o', 'gpx,gpxver=1.1', '-F', tmp2
+    )
 
     tree = ET.parse(tmp2)
     root = tree.getroot()
@@ -94,7 +95,6 @@ def convert(args, outfile, xt_state=None, xt_error=None, outext=None,
     return n_point
 
 def main():
-    """for debug only."""
     cf = Config()
     cf.load()
     args = cf.parse(sys.argv[1:])

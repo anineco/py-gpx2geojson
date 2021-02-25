@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""gpx2geojson: GPX to GeoJSON / KML converter.
+
+    GUI application for merging kashmir3d-generated multiple
+    GPX files into a single file, decimating track points,
+    and converting into a GeoJSON or KML file,
+    both of which are specified in
+    https://maps.gsi.go.jp/development/sakuzu_siyou.html.
+    Originally written in Perl, and rewritten in Python3.
+"""
 
 import os
 import tkinter as tk
@@ -234,7 +243,6 @@ class App(tk.Frame):
         self.master.destroy()
 
 def main():
-    """for debug only."""
     root = tk.Tk()
     app = App(master=root)
     app.mainloop()
