@@ -3,7 +3,6 @@
 
 from const import GPX, KASHMIR3D
 
-
 def icon(t):
     e = t.find(GPX + 'extensions')
     return e.find(KASHMIR3D + 'icon').text

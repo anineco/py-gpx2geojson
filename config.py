@@ -57,8 +57,7 @@ class Config:
 
     @staticmethod
     def usage():
-        """display help message to stderr."""
-        help = """\
+        msg = """\
 Usage: gpx2geojson gpxfiles...
 Options:
     -a opacity      between 0 and 1
@@ -68,7 +67,7 @@ Options:
     -f format       output format (gpx, kml, geojson)
     -h              print this message.\
 """
-        print(help, file=sys.stderr)
+        print(msg, file=sys.stderr)
 
     def parse(self, argv):
         """parse command line options."""
