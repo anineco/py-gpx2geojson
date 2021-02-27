@@ -5,7 +5,7 @@ A GUI application for merging kashmir3d-generated multiple GPX files into a sing
 To run gpx2geojson, you need [Python](https://www.python.org/) and [GPSBabel](https://www.gpsbabel.org/). Both are open software and can be downloaded and used free of charge. Gpx2geojson works on Windows, macOS, and Linux.
 
 ## How to install
-Download the ZIP archive to an appropriate folder and extract it, or clone this repositry.
+Download the ZIP archive to an appropriate folder and extract it, or clone this repository.
 
 ## How to launch
 **gpx2geojson.pyw** is the main program, which can be run as a CUI from a terminal application. If you run **gpx2geojson.pyw** with a option '-h', it will display a simple usage as follows:
