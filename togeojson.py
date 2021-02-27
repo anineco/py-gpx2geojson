@@ -52,7 +52,7 @@ def get_linestring_properties(t, line_size, line_style, opacity):
     }
     s = line_style if line_style != '0' else extensions.line_style(t)
     if s in dash:
-        properties['_dashArray'] = list(map(lambda x: w * x, dash[s]))
+        properties['_dashArray'] = ','.join(map(lambda x: str(w * x), dash[s]))
     return properties
 
 def get_linestring_feature(segment, tag, properties):
