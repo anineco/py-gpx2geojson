@@ -115,7 +115,7 @@ class App(Frame):
         b.grid(row=3, column=4, sticky='ew')
 
         # 出力形式
-        f = Frame(self, borderwidth=1, relief='sunken')
+        f = Frame(self, borderwidth=2, padding=0, relief='sunken')
         f.grid(row=4, column=1, sticky='nsew')
         formats = [['GPX', '.gpx'], ['KML', '.kml'], ['GeoJSON', '.geojson']]
         for key, value in formats:
@@ -138,7 +138,8 @@ class App(Frame):
         b.grid(row=7, column=1, sticky='nsew')
 
         # 線種
-        f = Frame(self, borderwidth=1, relief='sunken')
+        f = Frame(self, borderwidth=2, padding=0, relief='sunken')
+        # NOTE: for win10, if padding is not specified, inner widgets overlap the border.
         f.grid(row=8, column=1, sticky='nsew')
         styles = [['GPX', '0'], ['実線', '1'], ['破線', '11'], ['点線', '13']]
         for key, value in styles:
@@ -147,7 +148,7 @@ class App(Frame):
             b.pack(side='left')
 
         # 線幅
-        f = Frame(self, borderwidth=1, relief='sunken')
+        f = Frame(self, borderwidth=2, padding=0, relief='sunken')
         f.grid(row=9, column=1, sticky='nsew')
         sizes =  [['GPX', '0'], [' 1pt', '1'], [' 3pt',  '3'], [' 5pt',  '5']]
         for key, value in sizes:
@@ -168,7 +169,7 @@ class App(Frame):
         self.set_xt()
 
         # 軌跡点数
-        e = Entry(self, state='readonly')
+        e = Entry(self, state='readonly', foreground='blue')
         e['textvariable'] = self.n_point
         e.grid(row=9, column=3, sticky='ew')
 
