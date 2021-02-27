@@ -23,8 +23,6 @@ class App(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        self.master.title('GPX2GeoJSON')
-        self.master.resizable(False, False)
         self.pack()
 
         self.cf = Config()
@@ -169,7 +167,7 @@ class App(tk.Frame):
         self.set_xt()
 
         # 軌跡点数
-        e = tk.Entry(self, state='readonly')
+        e = tk.Entry(self, state='readonly', foreground='blue')
         e['textvariable'] = self.n_point
         e.grid(row=9, column=3, sticky='w')
 
@@ -244,6 +242,8 @@ class App(tk.Frame):
 
 def main():
     root = tk.Tk()
+    root.title('GPX2GeoJSON')
+    root.resizable(False, False)
     app = App(master=root)
     app.mainloop()
 

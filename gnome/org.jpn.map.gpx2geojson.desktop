@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Version=1.1
+Name=GPX2GeoJSON
+Comment=GPX to GeoJSON Converter
+Exec=/FULL_PATH_TO/gpx2geojson.pyw
+Icon=python_94570
+Terminal=false

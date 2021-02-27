@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.1
+Name=Tk
+Comment=Tcl/Tk interface for Python
+Exec=true
+Icon=python_94570
+Terminal=false
+NoDisplay=true
