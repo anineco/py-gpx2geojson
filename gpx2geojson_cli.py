@@ -79,12 +79,11 @@ def convert(args, outfile, xt_state=None, xt_error=None, outext=None,
     n_point = count_track_point(tree)
     if outext == '.geojson':
         geojson = togeojson(tree, line_size, line_style, opacity)
-        s = json.dumps(geojson, indent=2, ensure_ascii=False) # serialize
         if outfile is None:
-            print(s)
+            print(json.dumps(geojson, ensure_ascii=False, indent=2))
         else:
             with open(outfile, 'w') as f:
-                f.write(s)
+                json.dump(geojson, f, ensure_ascii=False, separators=(',', ':'))
     else:
         if outext == '.kml':
             tree = tokml(tree, line_size, opacity)
