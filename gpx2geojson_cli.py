@@ -76,21 +76,25 @@ def convert(args, outfile, xt_state=None, xt_error=None, outext=None,
     tree = merge(args)
     if xt_state != '0':
         decimate(tree, xt_error)
+
     n_point = count_track_point(tree)
+
     if outext == '.geojson':
         geojson = togeojson(tree, line_size, line_style, opacity)
-        if outfile is None:
-            print(json.dumps(geojson, ensure_ascii=False, indent=2))
-        else:
-            with open(outfile, 'w') as f:
-                json.dump(geojson, f, ensure_ascii=False, separators=(',', ':'))
+        s = json.dumps(geojson, ensure_ascii=False, separators=(',', ':'))
     else:
         if outext == '.kml':
             tree = tokml(tree, line_size, opacity)
-        if outfile is None:
-            print(ET.tostring(tree.getroot(), encoding='unicode'))
-        else:
-            tree.write(outfile, encoding='unicode')
+        ET.indent(tree, space='', level=0)
+        s = ET.tostring(tree.getroot(), encoding='unicode')
+
+    if outfile is None:
+        print(s)
+    else:
+        with open(outfile, 'w') as f:
+            f.write(s)
+            f.write('\n')
+
     return n_point
 
 def main():
