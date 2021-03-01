@@ -92,7 +92,7 @@ def tokml(tree, line_size, opacity):
         name = rte.find(GPX + 'name').text
         s = get_linestring_style(rte, line_size, opacity)
         p = get_linestring_placemark(rte, 'rtept', s, name)
-        doc.append(s)
+        doc.insert(1, s) # NOTE: next to 'GPS Track Log' element
         doc.append(p)
 
     for id, url in using.items():
@@ -100,13 +100,13 @@ def tokml(tree, line_size, opacity):
         i = ET.SubElement(s, 'IconStyle')
         ET.SubElement(i, 'scale').text = '1'
         ET.SubElement(ET.SubElement(i, 'Icon'), 'href').text = url
-        doc.append(s)
+        doc.insert(1, s)
 
     # Track
     for trk in root.findall(GPX + 'trk'):
         name = trk.find(GPX + 'name').text
         s = get_linestring_style(trk, line_size, opacity)
-        doc.append(s)
+        doc.insert(1, s)
         for trkseg in trk.findall(GPX + 'trkseg'):
             p = get_linestring_placemark(trkseg, 'trkpt', s, name)
             doc.append(p)
