@@ -57,12 +57,8 @@ def decimate(tree, xt_error):
     for trk in root.findall(GPX + 'trk'):
         for i, child in enumerate(trk):
             if child.tag == GPX + 'trkseg':
-<<<<<<< HEAD
                 trk.remove(child)
                 trk.insert(i, decimate_segment(child, xt_error))
-=======
-                decimate_segment(child, xt_error)
->>>>>>> 83f661caef38c86a43fd3ba54914ba6067f5cfa9
 
 def count_track_point(tree):
     """count track points in an element tree"""
