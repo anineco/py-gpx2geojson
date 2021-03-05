@@ -19,6 +19,7 @@
 <Icon>
 <href>https://map.jpn.org/icon/951005.png</href>
 </Icon>
+<hotSpot x="12" y="12" xunits="pixels" yunits="pixels"/>
 </IconStyle>
 </Style>
 <Style id="N952015">
@@ -27,6 +28,7 @@
 <Icon>
 <href>https://map.jpn.org/icon/952015.png</href>
 </Icon>
+<hotSpot x="12" y="12" xunits="pixels" yunits="pixels"/>
 </IconStyle>
 </Style>
 <Style id="N952014">
@@ -35,6 +37,7 @@
 <Icon>
 <href>https://map.jpn.org/icon/952014.png</href>
 </Icon>
+<hotSpot x="12" y="12" xunits="pixels" yunits="pixels"/>
 </IconStyle>
 </Style>
 <Style id="N954025">
@@ -43,11 +46,12 @@
 <Icon>
 <href>https://map.jpn.org/icon/954025.png</href>
 </Icon>
+<hotSpot x="12" y="12" xunits="pixels" yunits="pixels"/>
 </IconStyle>
 </Style>
 <Placemark>
 <name>足利公園</name>
-<description>&lt;table&gt;&lt;tr&gt;&lt;td&gt;駐車&lt;/td&gt;&lt;td&gt;8台&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</description>
+<description><![CDATA[<table><tr><td>駐車</td><td>8台</td></tr></table>]]></description>
 <styleUrl>#N954025</styleUrl>
 <Point>
 <coordinates>139.434786,36.337881</coordinates>
@@ -62,7 +66,7 @@
 </Placemark>
 <Placemark>
 <name>水道山</name>
-<description>&lt;table&gt;&lt;tr&gt;&lt;td&gt;標高&lt;/td&gt;&lt;td&gt;93m&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</description>
+<description><![CDATA[<table><tr><td>標高</td><td>93m</td></tr></table>]]></description>
 <styleUrl>#N952015</styleUrl>
 <Point>
 <coordinates>139.434467,36.339033</coordinates>
@@ -84,7 +88,7 @@
 </Placemark>
 <Placemark>
 <name>立岩山</name>
-<description>&lt;table&gt;&lt;tr&gt;&lt;td&gt;標高&lt;/td&gt;&lt;td&gt;96m&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</description>
+<description><![CDATA[<table><tr><td>標高</td><td>96m</td></tr></table>]]></description>
 <styleUrl>#N952015</styleUrl>
 <Point>
 <coordinates>139.427831,36.342014</coordinates>
@@ -92,7 +96,7 @@
 </Placemark>
 <Placemark>
 <name>愛宕山</name>
-<description>&lt;table&gt;&lt;tr&gt;&lt;td&gt;標高&lt;/td&gt;&lt;td&gt;81m&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</description>
+<description><![CDATA[<table><tr><td>標高</td><td>81m</td></tr></table>]]></description>
 <styleUrl>#N952015</styleUrl>
 <Point>
 <coordinates>139.423647,36.345186</coordinates>
@@ -121,7 +125,7 @@
 </Placemark>
 <Placemark>
 <name>湯殿山</name>
-<description>&lt;table&gt;&lt;tr&gt;&lt;td&gt;標高&lt;/td&gt;&lt;td&gt;160m&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</description>
+<description><![CDATA[<table><tr><td>標高</td><td>160m</td></tr></table>]]></description>
 <styleUrl>#N952015</styleUrl>
 <Point>
 <coordinates>139.426481,36.354331</coordinates>
@@ -136,7 +140,7 @@
 </Placemark>
 <Placemark>
 <name>野山</name>
-<description>&lt;table&gt;&lt;tr&gt;&lt;td&gt;標高&lt;/td&gt;&lt;td&gt;297m&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</description>
+<description><![CDATA[<table><tr><td>標高</td><td>297m</td></tr></table>]]></description>
 <styleUrl>#N952015</styleUrl>
 <Point>
 <coordinates>139.426406,36.362642</coordinates>
@@ -151,7 +155,7 @@
 </Placemark>
 <Placemark>
 <name>大岩山</name>
-<description>&lt;table&gt;&lt;tr&gt;&lt;td&gt;標高&lt;/td&gt;&lt;td&gt;417m&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</description>
+<description><![CDATA[<table><tr><td>標高</td><td>417m</td></tr></table>]]></description>
 <styleUrl>#N952015</styleUrl>
 <Point>
 <coordinates>139.437928,36.372144</coordinates>
@@ -173,7 +177,7 @@
 </Placemark>
 <Placemark>
 <name>両崖山</name>
-<description>&lt;table&gt;&lt;tr&gt;&lt;td&gt;標高&lt;/td&gt;&lt;td&gt;251m&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</description>
+<description><![CDATA[<table><tr><td>標高</td><td>251m</td></tr></table>]]></description>
 <styleUrl>#N952015</styleUrl>
 <Point>
 <coordinates>139.448003,36.353542</coordinates>
@@ -181,7 +185,7 @@
 </Placemark>
 <Placemark>
 <name>天狗山</name>
-<description>&lt;table&gt;&lt;tr&gt;&lt;td&gt;標高&lt;/td&gt;&lt;td&gt;259m&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</description>
+<description><![CDATA[<table><tr><td>標高</td><td>259m</td></tr></table>]]></description>
 <styleUrl>#N952015</styleUrl>
 <Point>
 <coordinates>139.441158,36.353775</coordinates>
@@ -189,7 +193,7 @@
 </Placemark>
 <Placemark>
 <name>須永山</name>
-<description>&lt;table&gt;&lt;tr&gt;&lt;td&gt;標高&lt;/td&gt;&lt;td&gt;154m&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</description>
+<description><![CDATA[<table><tr><td>標高</td><td>154m</td></tr></table>]]></description>
 <styleUrl>#N952015</styleUrl>
 <Point>
 <coordinates>139.437736,36.343428</coordinates>

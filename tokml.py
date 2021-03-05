@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-import xml.etree.ElementTree as ET
+from lxml import etree as ET
 
 import extensions
 import iconlut
@@ -16,7 +16,7 @@ def get_point_placemark(pt):
     global using
     icon = extensions.icon(pt)
     id = 'N' + icon
-    using[id] = iconlut.url(icon)
+    using[id] = icon
     p = ET.Element('Placemark')
     ET.SubElement(p, 'name').text = pt.find(GPX + 'name').text
     if cmt := pt.find(GPX + 'cmt').text:
@@ -27,7 +27,7 @@ def get_point_placemark(pt):
                 html += '<tr><td>' + key + '</td><td>' + value + '</td></tr>'
         if html:
             html = '<table>' + html + '</table>'
-            ET.SubElement(p, 'description').text = html
+            ET.SubElement(p, 'description').text = ET.CDATA(html)
 
     ET.SubElement(p, 'styleUrl').text = '#' + id
     lon = float(pt.get('lon'))
@@ -95,11 +95,13 @@ def tokml(tree, line_size, opacity):
         doc.insert(1, s) # NOTE: next to 'GPS Track Log' element
         doc.append(p)
 
-    for id, url in using.items():
+    for id, icon in using.items():
         s = ET.Element('Style', attrib={'id':id})
         i = ET.SubElement(s, 'IconStyle')
         ET.SubElement(i, 'scale').text = '1'
-        ET.SubElement(ET.SubElement(i, 'Icon'), 'href').text = url
+        ET.SubElement(ET.SubElement(i, 'Icon'), 'href').text = iconlut.url(icon)
+        x, y = iconlut.anchor(icon)
+        ET.SubElement(i, 'hotSpot', x=str(x), y=str(y), xunits='pixels', yunits='pixels')
         doc.insert(1, s)
 
     # Track

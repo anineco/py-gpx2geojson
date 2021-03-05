@@ -5,17 +5,13 @@ import json
 import os
 import sys
 import tempfile
-import xml.etree.ElementTree as ET
+from lxml import etree as ET
 
 import gpsbabel
 from config import Config
 from const import GPX
 from togeojson import togeojson
 from tokml import tokml
-
-ET.register_namespace('', 'http://www.topografix.com/GPX/1/1')
-ET.register_namespace('kashmir3d', 'http://www.kashmir3d.com/namespace/kashmir3d')
-ET.register_namespace('kml', 'http://www.opengis.net/kml/2.2')
 
 def merge(files):
     """read gpx files and merge into one tree."""
@@ -35,7 +31,7 @@ def decimate_segment(trkseg, xt_error):
     tmp1 = os.path.join(temp.name, 'tmp1.gpx')
     tmp2 = os.path.join(temp.name, 'tmp2.gpx')
 
-    root = ET.Element('gpx')
+    root = ET.Element('gpx', nsmap={None:'http://www.topografix.com/GPX/1/1'})
     ET.SubElement(root, 'trk').append(trkseg)
     tree = ET.ElementTree(root)
     tree.write(tmp1)
@@ -59,7 +55,8 @@ def decimate(tree, xt_error):
     for trk in root.findall(GPX + 'trk'):
         for i, child in enumerate(trk):
             if child.tag == GPX + 'trkseg':
-                trk[i] = decimate_segment(child, xt_error)
+                trk.remove(child)
+                trk.insert(i, decimate_segment(child, xt_error))
 
 def count_track_point(tree):
     """count track points in an element tree"""
