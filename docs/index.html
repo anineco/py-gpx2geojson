@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>GPX2GeoJSON（GPX→GeoJSONコンバータ）</title>
+<title>GPX2GeoJSON</title>
 <link rel='stylesheet' href='common.css'>
 <style>
 .t-c td { text-align: center; }
@@ -26,7 +26,7 @@
 <li>このサイトに関するご意見・ご質問・ご要望は、<a href="http://anineco.nyanta.jp/bbs/">サポート掲示板</a>へお願いします。</li>
 </ul>
 <h2>GPX2GeoJSONとは？</h2>
-<p>GPX2GeoJSON（GPX→GeoJSONコンバータ）は、カシミール3Dで保存した<b>GPXファイル</b>（拡張子 .gpx）を、各種ウェブ地図に上乗せして表示できる<b>GeoJSONファイル</b>（拡張子 .geojson）に変換するデスクトップアプリケーションです。Windows 10、macOS、Linuxで動作します。2008年1月から公開している<a href="https://anineco.nyanta.jp/gpx2jsgi/gpx2jsgi.html">GPX2JSGI</a>（GPX→KMLコンバータ）と同様、作者のホームページ（<a href="https://anineco.org/">あにねこ登山日誌</a>）の山行記録に添えるルート地図を作成するためのユーティリティとして開発したものです。当初は上乗せデータとしてJSGIファイル、2013年12月からはKMLファイルを利用していましたが、主流になりつつあるGeoJSONファイルへ2019年2月に移行しました。その際に、コンセプトはGPX2JSGIから引き継ぎつつ、全く新規に開発したアプリケーションです。Ver. 1.0より、KMLファイルやGPXファイルの出力機能を追加しました。Ver. 2.0より、スクリプト言語をPerlからPython 3に変更しました。</p>
+<p>GPX2GeoJSON（GPX→GeoJSONコンバータ）は、カシミール3Dで保存した<b>GPXファイル</b>（拡張子 .gpx）を、各種ウェブ地図に上乗せして表示できる<b>GeoJSONファイル</b>（拡張子 .geojson）に変換するデスクトップアプリケーションです。Windows 10、macOS、Linuxで動作します。2008年1月に公開した<a href="https://anineco.nyanta.jp/gpx2jsgi/gpx2jsgi.html">GPX2JSGI</a>（GPX→KMLコンバータ）と同様、作者のホームページ（<a href="https://anineco.org/">あにねこ登山日誌</a>）の山行記録に添えるルート地図を作成するためのユーティリティとして開発したものです。当初は上乗せデータとしてJSGIファイル、2013年12月からはKMLファイルを利用していましたが、主流になりつつあるGeoJSONファイルへ2019年2月に移行しました。その際に、コンセプトはGPX2JSGIから引き継ぎつつ、全く新規に開発したアプリケーションです。Ver. 1.0より、KMLファイルやGPXファイルの出力機能を追加しました。Ver. 2.0よりスクリプト言語をPerlからPython 3に変更しました。</p>
 <h3>主な機能と特徴</h3>
 <ul>
 <li>カシミール3Dで保存したGPXファイルを、国土地理院が提案する<a href="https://github.com/gsi-cyberjapan/geojson-with-style-spec">スタイルつきGeoJSON規約</a>に準拠したGeoJSONファイル、または<a href="https://maps.gsi.go.jp/development/sakuzu_siyou.html">KMLウェブ地図プロファイル</a>に準拠したKMLファイルに変換します。</li>
@@ -44,19 +44,31 @@
 <tr><td><iframe width="640" height="480" src="omap_gpx.html"></iframe></td></tr>
 <tr><td>(a) GPXファイル（26348 bytes）</td></tr>
 <tr><td><iframe width="640" height="480" src="omap_kml.html"></iframe></td></tr>
-<tr><td>(b) KMLファイル（9163 bytes）</td></tr>
+<tr><td>(b) KMLファイル（9031 bytes）</td></tr>
 <tr><td><iframe width="640" height="480" src="omap_geojson.html"></iframe></td></tr>
 <tr><td>(c) GeoJSONファイル（8965 bytes）</td></tr>
 <tr><td>図1 OpenLayers 6を用いた上乗せデータのWeb地図での表示例</td></tr>
 </tbody>
 </table>
 <h3>動作環境</h3>
-<p>Windows 10、macOS、Linuxで動作します。実行に際してはPython 3とGPSBabelが必要です。<p>
+<p>Windows 10、macOS、Linuxで動作します。実行に際してはPython 3、Pythonのlxmlライブラリ、GPSBabelが必要です。<p>
 <h3>著作権について</h3>
 <p>GPX2GeoJSONのソフトウェアおよび付属文書の著作権は、作者のあにねこ（anineco@nifty.com）が保持します。本ソフトウェアはMITライセンスに基づいて無償で提供され、複製を入手した人は商用・非商用を問わず自由に使用、複写、変更、結合、掲載、配布することができます。本ソフトウェアの複製または変更した物を掲載、配布する場合は、ソースコード中の著作権表示は削除できません。</p>
 <h3>免責事項</h3>
 <p>本ソフトウェアは無保証です。特に、変換結果のデータ形式の正当性・正確性については保証しません。作者は本ソフトウェアに起因するいかなる義務（サポートを含む）についても責任を負いません。</p>
 <h2>導入方法</h2>
+<h3>準備</h3>
+<p>Windowsの場合、以下の手順でPython 3, lxml、GPSBabelのインストールが必要です。macOS、Linuxについては、それぞれ、パッケージ管理ソフトウェアを用いて簡単にインストール可能なので、説明は省略します。</p>
+<h4>Python 3</h4>
+<p>公式サイト<a href="https://www.python.org/">https://www.python.org/</a>から最新版（2021-03-01現在、python-3.9.2-embed-amd64.zip）をダウンロードして、インストールします。<a href="https://www.python.jp/install/windows/install.html">Windows版Pythonのインストール</a>が参考になります。インストールの際、"Add Python 3.x to PATH"にチェックを入れて下さい。</p>
+<h4>lxml</h4>
+<p>コマンドプロンプトを起動し、次のコマンドを実行します。</p>
+<pre>pip3 install lxml</pre>
+<p>追加インストールされているライブラリとそのバージョンは、次のコマンドで一覧表示できます。</p>
+<pre>pip3 list</pre>
+<p><code>lxml</code>のバージョンは<code>&gt;=4.5</code>であることが必要です。</p>
+<h4>GPSBabel</h4>
+<p>公式サイト<a href="https://www.gpsbabel.org/">https://www.gpsbabel.org/</a>から最新版（2021-03-01現在、GPSBabel-1.7.0-Setup-exe）をダウンロードしてインストールします。インストール先は通常<code>'C:\Program Files (x86)\GPSBabel'</code>です。これと異なる場合は、<code>gpsbabel.py</code>の中で指定されている<code>gpsbabel.exe</code>のパスを書き換える必要があります。</p>
 <h3>インストール</h3>
 <div style="float:right;text-align:center;font-size:small;padding:5px;margin:5px;border:dashed 2px gray;background:white;"><img src="image/github.png" width="359" height="302"><br>図2 GitHubダウンロード画面</div>
 <p>まず、GitHubからGPX2GeoJSONの最新版をダウンロードします。<a href="https://github.com/anineco/py-gpx2geojson">https://github.com/anineco/py-gpx2geojson</a>にアクセスするとGPX2GeoJSONのリポジトリ画面が開きます。<span style="font-size:small;background:green;color:white;padding:2px;border-radius:2px;">↓Code</span>をクリックすると図2の小窓が開き、続いて<span style="color:blue;">Download ZIP</span>をクリックするとダウンロードが始まります。</p>
@@ -79,9 +91,6 @@ py-gpx2geojson
 └── test/*            （テスト用データ）
 </pre>
 </div><!-- .src -->
-<p>Windowsの場合、以下の手順でPython 3とGPSBabelのインストールが必要です。macOS、Linuxについては、それぞれ、パッケージ管理ソフトウェアを用いて簡単にインストール可能なので、説明は省略します。</p>
-<p>Python 3は、公式ウェブサイト<a href="https://www.python.org/">https://www.python.org/</a>から最新版（2021-03-01現在、python-3.9.2-embed-amd64.zip）をダウンロードし、インストールして下さい。</p>
-<p>Windowsの場合、GPSBabelは、公式ウェブサイト<a href="https://www.gpsbabel.org/">https://www.gpsbabel.org/</a>最新版（2021-03-01現在、GPSBabel-1.7.0-Setup-exe）をダウンロードしてインストールして下さい。インストール先は通常<code>'C:\Program Files (x86)\GPSBabel'</code>で、これと異なる場合は<code>gpsbabel.exe</code>のパスを<code>gpsbabel.py</code>で指定します。</p>
 <h3>アンインストール</h3>
 <p>GPX2GeoJSONのアンインストールは、展開したフォルダをまるごと削除して下さい。GPX2GeoJSONを一度起動して終了すると、ホームフォルダ直下に.gpx2geojsonというファイルが作成されます。アンインストールの際には、このファイルも削除して差し支えありません。</p>
 <h2>操作方法</h2>
