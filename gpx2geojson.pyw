@@ -204,8 +204,8 @@ class App(Frame):
         nam = { '.geojson': 'GeoJSON', '.kml': 'KML', '.gpx': 'GPX' }
         ret = filedialog.asksaveasfilename(
             filetypes=[(nam[ext] + 'ファイル', '*' + ext), ('', '*')],
-            initialdir=self.cf.outdir,
-            initialfile='routemap'
+            initialdir=self.cf.indir,
+            initialfile='routemap'+ext
         )
         if ret:
             self.outfile.set(ret)
