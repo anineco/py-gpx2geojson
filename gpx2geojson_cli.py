@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import codecs
 import json
 import os
 import sys
@@ -85,9 +86,9 @@ def convert(args, outfile, xt_state=None, xt_error=None, outext=None,
         s = ET.tostring(tree.getroot(), encoding='unicode')
 
     if outfile is None:
-        print(s)
+        print(s) # FIXME: in win10, output in sjis
     else:
-        with open(outfile, 'w') as f:
+        with codecs.open(outfile, 'w', 'utf-8') as f:
             f.write(s)
             f.write('\n')
 
