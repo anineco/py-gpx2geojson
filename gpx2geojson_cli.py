@@ -43,14 +43,10 @@ def decimate_segment(trkseg, xt_error):
     )
 
     tree = ET.parse(tmp2)
+    temp.cleanup()
     root = tree.getroot()
     trk = root.find(GPX + 'trk')
-    seg = trk.find(GPX + 'trkseg')
-    trkseg.clear()
-    for trkpt in seg.findall(GPX + 'trkpt'):
-        trkseg.append(trkpt)
-    temp.cleanup()
-    return trkseg
+    return trk.find(GPX + 'trkseg')
 
 def decimate(tree, xt_error):
     """decimate track points in an element tree of gpx."""
