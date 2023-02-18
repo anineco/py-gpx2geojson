@@ -18,7 +18,7 @@ from tkinter.ttk import *
 from config import Config
 from gpx2geojson_cli import convert
 
-VERSION = '2.1'
+VERSION = '2.2'
 
 class App(Frame):
     def __init__(self, master=None):
@@ -205,10 +205,11 @@ class App(Frame):
         ret = filedialog.asksaveasfilename(
             filetypes=[(nam[ext] + 'ファイル', '*' + ext), ('', '*')],
             initialdir=self.cf.indir,
-            initialfile='routemap'+ext
+            initialfile='routemap',
+            defaultextension=ext
         )
         if ret:
-            self.outfile.set(ret+ext)
+            self.outfile.set(ret)
 
     def set_xt(self):
         self.xt.configure(state='normal' if self.xt_state.get() != '0' else 'disabled')
