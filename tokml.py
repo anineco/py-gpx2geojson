@@ -19,9 +19,9 @@ def get_point_placemark(pt):
     using[id] = icon
     p = ET.Element('Placemark')
     ET.SubElement(p, 'name').text = pt.find(GPX + 'name').text
-    if cmt := pt.find(GPX + 'cmt').text:
+    if (cmt := pt.find(GPX + 'cmt')) is not None and cmt.text:
         html = ''
-        for s in cmt.split(','):
+        for s in cmt.text.split(','):
             key, value = s.strip().split('=')
             if key:
                 html += '<tr><td>' + key + '</td><td>' + value + '</td></tr>'

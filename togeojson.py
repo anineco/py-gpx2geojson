@@ -23,8 +23,8 @@ def get_point_feature(pt):
             'coordinates': [float(pt.get('lon')), float(pt.get('lat'))]
         }
     }
-    if cmt := pt.find(GPX + 'cmt').text:
-        for s in cmt.split(','):
+    if (cmt := pt.find(GPX + 'cmt')) is not None and cmt.text:
+        for s in cmt.text.split(','):
             key, value = s.strip().split('=')
             if key:
                 feature['properties'][key] = value
