@@ -7,9 +7,26 @@ import extensions
 import iconlut
 from const import GPX
 
+# bounding box
+min_lon = min_lat = max_lon = max_lat = None
+
+def update_bounding_box(lon, lat):
+    global min_lon, min_lat, max_lon, max_lat
+    if min_lon > lon:
+        min_lon = lon
+    if min_lat > lat:
+        min_lat = lat
+    if max_lon < lon:
+        max_lon = lon
+    if max_lat < lat:
+        max_lat = lat
+
 def get_point_feature(pt):
     """get point feature from 'wpt' or 'rtept'."""
     icon = extensions.icon(pt)
+    lon = float(pt.get('lon'))
+    lat = float(pt.get('lat'))
+    update_bounding_box(lon, lat)
     feature = {
         'type': 'Feature',
         'properties': {
@@ -20,7 +37,7 @@ def get_point_feature(pt):
         },
         'geometry': {
             'type': 'Point',
-            'coordinates': [float(pt.get('lon')), float(pt.get('lat'))]
+            'coordinates': [lon, lat]
         }
     }
     if (cmt := pt.find(GPX + 'cmt')) is not None and cmt.text:
@@ -68,11 +85,14 @@ def get_linestring_feature(segment, tag, properties):
     for pt in segment.findall(GPX + tag):
         lon = float(pt.get('lon'))
         lat = float(pt.get('lat'))
+        update_bounding_box(lon, lat)
         feature['geometry']['coordinates'].append([lon, lat])
     return feature
 
 def togeojson(tree, line_size, line_style, opacity):
     """convert element tree of gpx to geojson."""
+    global min_lon, min_lat, max_lon, max_lat
+    min_lon, min_lat, max_lon, max_lat = 180, 90, -180, -90
     geojson = {
         'type': 'FeatureCollection',
         'features': []
@@ -102,6 +122,8 @@ def togeojson(tree, line_size, line_style, opacity):
         for trkseg in trk.findall(GPX + 'trkseg'):
             feature = get_linestring_feature(trkseg, 'trkpt', properties)
             geojson['features'].append(feature)
+
+    geojson['bbox'] = [min_lon, min_lat, max_lon, max_lat]
 
     return geojson
 

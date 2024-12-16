@@ -18,7 +18,7 @@ from tkinter.ttk import *
 from config import Config
 from gpx2geojson_cli import convert
 
-VERSION = '2.2'
+VERSION = '2.3'
 
 class App(Frame):
     def __init__(self, master=None):
