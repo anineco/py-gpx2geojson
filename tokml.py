@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-from lxml import etree as ET
+from lxml import etree as ET # NOTE: ET.CDATA() is not available in xml.etree.ElementTree
 
 import extensions
 import iconlut

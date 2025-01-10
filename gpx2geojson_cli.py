@@ -6,7 +6,7 @@ import json
 import os
 import sys
 import tempfile
-from lxml import etree as ET
+from lxml import etree as ET # NOTE: ET.CDATA() is not available in xml.etree.ElementTree
 
 import gpsbabel
 from config import Config
